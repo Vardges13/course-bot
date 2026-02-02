@@ -3,38 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Онлайн-академия — Каталог курсов</title>
+<title>Vardges Academy</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
   :root {
-    --primary: #4A6CF7;
-    --primary-dark: #3B5DE7;
-    --accent: #6366F1;
-    --gradient: linear-gradient(135deg, #4A6CF7 0%, #6366F1 100%);
-    --bg: #F0F4FF;
+    --primary: #1B2838;
+    --primary-light: #2A3F5F;
+    --accent: #C9A84C;
+    --accent-light: #E4C76B;
+    --accent-glow: rgba(201,168,76,0.15);
+    --bg: #F5F3EF;
     --bg-card: #FFFFFF;
-    --bg-nav: #E8EEFF;
-    --text-primary: #1A1A2E;
+    --bg-dark: #1B2838;
+    --text-primary: #1B2838;
     --text-secondary: #6B7280;
     --text-muted: #9CA3AF;
-    --border: #E2E8F0;
-    --shadow-card: 0 2px 12px rgba(74, 108, 247, 0.08);
-    --shadow-btn: 0 4px 16px rgba(74, 108, 247, 0.2);
-    --radius: 12px;
-    --radius-lg: 16px;
+    --text-light: #FFFFFF;
+    --border: #E8E4DD;
+    --shadow-card: 0 2px 16px rgba(27,40,56,0.08);
+    --shadow-hover: 0 8px 32px rgba(27,40,56,0.12);
+    --shadow-gold: 0 4px 20px rgba(201,168,76,0.25);
+    --radius: 14px;
+    --radius-lg: 20px;
     --radius-pill: 50px;
     --nav-height: 72px;
-    --tab-height: 52px;
+    --tab-height: 48px;
   }
 
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-  }
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 
   body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -47,481 +45,406 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /* ===== HEADER ===== */
+  .hero {
+    position: relative;
+    width: 100%;
+    height: 260px;
+    overflow: hidden;
+    background: var(--bg-dark);
+  }
+  .hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 15%;
+    opacity: 0.85;
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(27,40,56,0.15) 0%, rgba(27,40,56,0.85) 100%);
+  }
+  .hero-content {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    z-index: 2;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--primary);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: var(--radius-pill);
+    margin-bottom: 8px;
+  }
+  .hero-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text-light);
+    line-height: 1.15;
+    letter-spacing: -0.5px;
+  }
+  .hero-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    margin-top: 4px;
+    font-weight: 400;
+  }
+
   /* ===== TOP TABS ===== */
   .top-tabs {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    padding: 10px 16px;
-    background: var(--bg);
+    gap: 0;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 10;
   }
-
   .top-tab {
-    padding: 8px 18px;
-    border-radius: var(--radius-pill);
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    border: none;
-    background: transparent;
-    color: var(--text-secondary);
-    font-family: inherit;
-    white-space: nowrap;
-  }
-
-  .top-tab.active {
-    background: var(--gradient);
-    color: #fff;
+    flex: 1;
+    text-align: center;
+    padding: 14px 0;
+    font-size: 13px;
     font-weight: 600;
-    box-shadow: 0 2px 8px rgba(74, 108, 247, 0.3);
-  }
-
-  .top-tab:not(.active):hover {
-    background: rgba(74, 108, 247, 0.08);
-  }
-
-  /* ===== PAGE CONTAINER ===== */
-  .page {
-    display: none;
-    padding: 0 16px 100px 16px;
-    animation: fadeIn 0.25s ease;
-  }
-
-  .page.active {
-    display: block;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ===== CATALOG PAGE ===== */
-  .page-title {
-    font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 4px;
-  }
-
-  .catalog-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-bottom: 8px;
-  }
-
-  .catalog-header .page-title {
-    flex-shrink: 0;
-  }
-
-  .catalog-illustration {
-    width: 100%;
-    max-width: 320px;
-    margin: 0 auto 16px;
-    display: block;
-  }
-
-  .illustration-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 12px;
-  }
-
-  .illustration-container svg {
-    width: 100%;
-    max-width: 300px;
-    height: auto;
-  }
-
-  /* Hint row */
-  .hint-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 0;
-    margin-bottom: 8px;
+    color: var(--text-muted);
+    border: none;
+    background: none;
     cursor: pointer;
+    position: relative;
+    transition: color 0.2s;
+  }
+  .top-tab.active {
+    color: var(--accent);
+  }
+  .top-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 20%;
+    right: 20%;
+    height: 3px;
+    background: var(--accent);
+    border-radius: 3px 3px 0 0;
   }
 
-  .hint-icon {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    border: 2px solid var(--primary);
+  /* ===== PAGES ===== */
+  .page { display: none; padding-bottom: calc(var(--nav-height) + 20px); }
+  .page.active { display: block; }
+
+  /* ===== CATALOG ===== */
+  .section-header {
+    padding: 20px 16px 12px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
+    justify-content: space-between;
+  }
+  .section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  .section-count {
+    font-size: 12px;
+    color: var(--text-muted);
+    background: var(--accent-glow);
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    color: var(--accent);
   }
 
-  .hint-icon svg {
-    width: 12px;
-    height: 12px;
-  }
-
-  .hint-text {
-    font-size: 14px;
-    color: var(--primary);
-    font-weight: 500;
-  }
-
-  /* Category buttons */
-  .category-list {
+  .categories {
+    padding: 0 16px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
   }
 
-  .category-btn {
-    width: 100%;
-    padding: 16px 20px;
-    border-radius: var(--radius);
-    border: 1.5px solid var(--border);
+  .cat-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
     background: var(--bg-card);
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--text-primary);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow-card);
     cursor: pointer;
     transition: all 0.2s ease;
-    font-family: inherit;
-    text-align: center;
-    box-shadow: var(--shadow-card);
+    border: 1px solid transparent;
   }
-
-  .category-btn:hover {
-    border-color: var(--primary);
-    background: rgba(74, 108, 247, 0.03);
-  }
-
-  .category-btn:active {
+  .cat-card:active {
     transform: scale(0.98);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--accent);
   }
-
-  .admin-btn {
-    width: 100%;
-    padding: 14px 20px;
-    border-radius: var(--radius);
-    border: 1.5px dashed var(--border);
-    background: transparent;
-    font-size: 22px;
-    color: var(--text-muted);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-family: inherit;
-    display: none;
-  }
-
-  .admin-btn:hover {
-    border-color: var(--primary);
-    color: var(--primary);
-  }
-
-  /* ===== ABOUT PAGE ===== */
-  .about-illustration {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-  }
-
-  .about-text {
-    font-size: 14px;
-    line-height: 1.7;
-    color: var(--text-secondary);
-    margin-bottom: 28px;
-    padding: 0 4px;
-  }
-
-  .about-text strong {
-    color: var(--text-primary);
-    font-weight: 600;
-  }
-
-  .about-quote {
-    background: var(--bg-card);
-    border-radius: var(--radius-lg);
-    padding: 20px;
-    margin-bottom: 28px;
-    box-shadow: var(--shadow-card);
-    position: relative;
-  }
-
-  .about-quote::before {
-    content: '"';
-    position: absolute;
-    top: 8px;
-    left: 14px;
-    font-size: 40px;
-    color: var(--primary);
-    opacity: 0.2;
-    font-family: Georgia, serif;
-    line-height: 1;
-  }
-
-  .about-quote p {
-    font-size: 14px;
-    line-height: 1.7;
-    color: var(--text-secondary);
-    padding-left: 4px;
-  }
-
-  .section-title {
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 16px;
-  }
-
-  .advantage-card {
-    background: var(--bg-card);
-    border-radius: var(--radius-lg);
-    padding: 20px;
-    margin-bottom: 12px;
-    box-shadow: var(--shadow-card);
-    display: flex;
-    gap: 16px;
-    align-items: flex-start;
-  }
-
-  .advantage-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, rgba(74, 108, 247, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%);
+  .cat-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .advantage-icon svg {
-    width: 24px;
-    height: 24px;
-    color: var(--primary);
-  }
-
-  .advantage-content {
-    flex: 1;
-  }
-
-  .advantage-title {
-    font-size: 15px;
-    font-weight: 600;
-    margin-bottom: 4px;
-    color: var(--primary);
-  }
-
-  .advantage-desc {
-    font-size: 13px;
-    line-height: 1.5;
-    color: var(--text-secondary);
-  }
-
-  /* ===== PURCHASE PAGE ===== */
-  .purchase-icon {
-    display: flex;
-    justify-content: center;
-    margin: 8px 0 12px;
-  }
-
-  .purchase-icon svg {
-    width: 88px;
-    height: 88px;
-  }
-
-  .purchase-title {
-    text-align: center;
     font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 24px;
-  }
-
-  .plan-card {
-    background: var(--bg-card);
-    border-radius: var(--radius-lg);
-    padding: 18px 20px;
-    margin-bottom: 12px;
-    box-shadow: var(--shadow-card);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    border: 2px solid transparent;
-    position: relative;
-  }
-
-  .plan-card.selected {
-    border-color: var(--primary);
-    box-shadow: 0 2px 16px rgba(74, 108, 247, 0.15);
-  }
-
-  .plan-card-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 6px;
-  }
-
-  .plan-name-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .plan-radio {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 2px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
     flex-shrink: 0;
-    transition: border-color 0.2s ease;
   }
+  .cat-icon.sales { background: linear-gradient(135deg, #FFF3E0, #FFE0B2); }
+  .cat-icon.business { background: linear-gradient(135deg, #E8EAF6, #C5CAE9); }
+  .cat-icon.ai { background: linear-gradient(135deg, #E0F2F1, #B2DFDB); }
+  .cat-icon.marketing { background: linear-gradient(135deg, #FCE4EC, #F8BBD0); }
+  .cat-icon.brand { background: linear-gradient(135deg, #F3E5F5, #CE93D8); }
 
-  .plan-card.selected .plan-radio {
-    border-color: var(--primary);
-  }
-
-  .plan-radio-inner {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: var(--gradient);
-    transform: scale(0);
-    transition: transform 0.2s ease;
-  }
-
-  .plan-card.selected .plan-radio-inner {
-    transform: scale(1);
-  }
-
-  .plan-name {
+  .cat-info { flex: 1; }
+  .cat-name {
     font-size: 15px;
     font-weight: 600;
-  }
-
-  .plan-badge {
-    background: var(--gradient);
-    color: #fff;
-    font-size: 11px;
-    font-weight: 700;
-    padding: 2px 8px;
-    border-radius: 20px;
-  }
-
-  .plan-price {
-    font-size: 16px;
-    font-weight: 700;
     color: var(--text-primary);
+    margin-bottom: 3px;
   }
-
-  .plan-details {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding-left: 28px;
-  }
-
-  .plan-old-price {
-    font-size: 13px;
-    color: var(--text-muted);
-    text-decoration: line-through;
-  }
-
-  .plan-sub {
-    font-size: 13px;
-    color: var(--text-secondary);
-  }
-
-  /* Checkbox */
-  .terms-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    margin: 20px 0;
-    padding: 0 4px;
-  }
-
-  .terms-checkbox {
-    width: 20px;
-    height: 20px;
-    border-radius: 6px;
-    border: 2px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    margin-top: 1px;
-  }
-
-  .terms-checkbox.checked {
-    background: var(--gradient);
-    border-color: var(--primary);
-  }
-
-  .terms-checkbox svg {
-    width: 12px;
-    height: 12px;
-    color: #fff;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-  }
-
-  .terms-checkbox.checked svg {
-    opacity: 1;
-  }
-
-  .terms-text {
-    font-size: 13px;
+  .cat-desc {
+    font-size: 12px;
     color: var(--text-secondary);
     line-height: 1.4;
   }
+  .cat-arrow {
+    color: var(--text-muted);
+    font-size: 18px;
+    flex-shrink: 0;
+  }
 
-  .terms-text a {
-    color: var(--primary);
-    text-decoration: none;
+  /* ===== STATS ===== */
+  .stats-row {
+    display: flex;
+    gap: 10px;
+    padding: 16px 16px 0;
+  }
+  .stat-card {
+    flex: 1;
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 14px;
+    text-align: center;
+    box-shadow: var(--shadow-card);
+  }
+  .stat-num {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--accent);
+  }
+  .stat-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
     font-weight: 500;
   }
 
-  /* Pay button */
+  /* ===== ABOUT PAGE ===== */
+  .about-section { padding: 20px 16px; }
+  .about-quote {
+    background: var(--bg-dark);
+    color: var(--text-light);
+    border-radius: var(--radius-lg);
+    padding: 24px 20px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .about-quote::before {
+    content: '"';
+    font-size: 60px;
+    color: var(--accent);
+    position: absolute;
+    top: 8px;
+    left: 16px;
+    font-family: Georgia, serif;
+    line-height: 1;
+    opacity: 0.5;
+  }
+  .about-quote p {
+    font-size: 15px;
+    line-height: 1.6;
+    font-style: italic;
+    padding-left: 8px;
+  }
+  .about-quote .author {
+    font-style: normal;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 12px;
+    font-size: 13px;
+  }
+
+  .about-block {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow-card);
+  }
+  .about-block h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .about-block p, .about-block li {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+  .about-block ul {
+    list-style: none;
+    padding: 0;
+  }
+  .about-block li {
+    padding: 6px 0;
+    padding-left: 20px;
+    position: relative;
+  }
+  .about-block li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ===== PURCHASE PAGE ===== */
+  .purchase-section { padding: 20px 16px; }
+  .plan-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow-card);
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .plan-card.selected {
+    border-color: var(--accent);
+    box-shadow: var(--shadow-gold);
+  }
+  .plan-card.recommended::before {
+    content: 'Выгодно';
+    position: absolute;
+    top: -10px;
+    right: 16px;
+    background: var(--accent);
+    color: var(--primary);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: var(--radius-pill);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .plan-name {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .plan-price {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--accent);
+  }
+  .plan-price span {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+  .plan-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+
+  .plan-features {
+    padding: 16px 0;
+  }
+  .plan-features li {
+    font-size: 13px;
+    color: var(--text-secondary);
+    padding: 5px 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .plan-features li::before {
+    content: '✓';
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .terms-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 0;
+    cursor: pointer;
+  }
+  .checkbox {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .checkbox.checked {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .checkbox.checked::after {
+    content: '✓';
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .terms-text {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
   .pay-btn {
     width: 100%;
-    padding: 18px;
-    border-radius: var(--radius);
+    background: var(--accent);
+    color: var(--primary);
     border: none;
-    background: var(--gradient);
-    color: #fff;
-    font-size: 17px;
-    font-weight: 600;
+    border-radius: var(--radius);
+    padding: 16px;
+    font-size: 15px;
+    font-weight: 700;
     cursor: pointer;
-    font-family: inherit;
-    box-shadow: var(--shadow-btn);
-    transition: all 0.2s ease;
-    margin-top: 8px;
+    transition: all 0.2s;
+    letter-spacing: 0.3px;
   }
-
-  .pay-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(74, 108, 247, 0.3);
-  }
-
-  .pay-btn:active {
+  .pay-btn:not(:disabled):active {
     transform: scale(0.98);
+    box-shadow: var(--shadow-gold);
   }
-
   .pay-btn:disabled {
-    opacity: 0.5;
+    opacity: 0.4;
     cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
   }
 
-  /* ===== BOTTOM NAVBAR ===== */
+  /* ===== BOTTOM NAV ===== */
   .bottom-nav {
     position: fixed;
     bottom: 0;
@@ -529,379 +452,232 @@
     transform: translateX(-50%);
     width: 100%;
     max-width: 420px;
-    background: var(--bg-nav);
-    border-top: 1px solid rgba(74, 108, 247, 0.08);
+    height: var(--nav-height);
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: space-around;
-    padding: 10px 0;
-    padding-bottom: max(10px, env(safe-area-inset-bottom));
     z-index: 100;
-    height: var(--nav-height);
+    padding-bottom: env(safe-area-inset-bottom, 0);
   }
-
   .nav-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 4px;
-    cursor: pointer;
-    padding: 4px 16px;
-    border-radius: 12px;
-    transition: all 0.2s ease;
-    -webkit-tap-highlight-color: transparent;
-    background: transparent;
+    background: none;
     border: none;
-    font-family: inherit;
-  }
-
-  .nav-item svg {
-    width: 24px;
-    height: 24px;
+    cursor: pointer;
     color: var(--text-muted);
-    transition: color 0.2s ease;
+    transition: color 0.2s;
+    padding: 8px 12px;
   }
+  .nav-item.active { color: var(--accent); }
+  .nav-item svg { width: 22px; height: 22px; }
+  .nav-item span { font-size: 10px; font-weight: 600; }
 
-  .nav-item span {
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--text-muted);
-    transition: color 0.2s ease;
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
-
-  .nav-item.active svg {
-    color: var(--primary);
-  }
-
-  .nav-item.active span {
-    color: var(--primary);
-    font-weight: 600;
-  }
-
-  /* ===== SCROLLBAR ===== */
-  ::-webkit-scrollbar {
-    width: 0;
-    display: none;
-  }
-
-  /* ===== SAFE AREA ===== */
-  @supports (padding-bottom: env(safe-area-inset-bottom)) {
-    .bottom-nav {
-      padding-bottom: calc(10px + env(safe-area-inset-bottom));
-    }
-  }
+  .cat-card { animation: fadeIn 0.3s ease backwards; }
+  .cat-card:nth-child(1) { animation-delay: 0.05s; }
+  .cat-card:nth-child(2) { animation-delay: 0.1s; }
+  .cat-card:nth-child(3) { animation-delay: 0.15s; }
+  .cat-card:nth-child(4) { animation-delay: 0.2s; }
+  .cat-card:nth-child(5) { animation-delay: 0.25s; }
 </style>
 </head>
 <body>
 
-<!-- ===== TOP TABS ===== -->
+<!-- HERO -->
+<div class="hero">
+  <img class="hero-img" src="vardges.jpg" alt="Vardges Academy">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Онлайн-академия</div>
+    <div class="hero-title">VARDGES<br>ACADEMY</div>
+    <div class="hero-sub">Реальный бизнес × ИИ × Здравый смысл</div>
+  </div>
+</div>
+
+<!-- TOP TABS -->
 <div class="top-tabs">
   <button class="top-tab active" onclick="switchTab('catalog')">Каталог</button>
-  <button class="top-tab" onclick="switchTab('about')">О проекте</button>
-  <button class="top-tab" onclick="switchTab('purchase')">Покупка</button>
+  <button class="top-tab" onclick="switchTab('about')">Об академии</button>
+  <button class="top-tab" onclick="switchTab('purchase')">Тарифы</button>
 </div>
 
-<!-- ===== PAGE 1: CATALOG ===== -->
+<!-- PAGE: CATALOG -->
 <div id="page-catalog" class="page active">
-
-  <div class="catalog-header">
-    <h1 class="page-title">Каталог курсов</h1>
-  </div>
-
-  <!-- Illustration: people with phone/laptop — learning theme -->
-  <div class="illustration-container">
-    <svg viewBox="0 0 320 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- Phone/Screen -->
-      <rect x="110" y="18" width="100" height="144" rx="16" fill="#E8EEFF" stroke="#4A6CF7" stroke-width="2"/>
-      <rect x="118" y="34" width="84" height="100" rx="4" fill="#fff"/>
-      <!-- Screen lines -->
-      <rect x="126" y="44" width="50" height="6" rx="3" fill="#4A6CF7" opacity="0.3"/>
-      <rect x="126" y="56" width="68" height="6" rx="3" fill="#6366F1" opacity="0.2"/>
-      <rect x="126" y="68" width="40" height="6" rx="3" fill="#4A6CF7" opacity="0.3"/>
-      <rect x="126" y="80" width="60" height="6" rx="3" fill="#6366F1" opacity="0.2"/>
-      <!-- Play button on screen -->
-      <circle cx="160" cy="110" r="12" fill="#4A6CF7" opacity="0.15"/>
-      <polygon points="156,104 168,110 156,116" fill="#4A6CF7"/>
-      <!-- Phone notch -->
-      <rect x="148" y="22" width="24" height="6" rx="3" fill="#CBD5E1"/>
-      <!-- Person Left - student -->
-      <circle cx="60" cy="70" r="18" fill="#FFD6B0"/>
-      <circle cx="60" cy="68" r="18" fill="#4A6CF7" opacity="0.1"/>
-      <circle cx="60" cy="66" r="16" fill="#FFD6B0"/>
-      <!-- Hair -->
-      <path d="M44 60 Q44 46 60 44 Q76 46 76 60" fill="#1A1A2E"/>
-      <!-- Eyes -->
-      <circle cx="54" cy="64" r="2" fill="#1A1A2E"/>
-      <circle cx="66" cy="64" r="2" fill="#1A1A2E"/>
-      <!-- Smile -->
-      <path d="M54 70 Q60 76 66 70" stroke="#1A1A2E" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-      <!-- Body -->
-      <path d="M42 90 Q42 82 60 80 Q78 82 78 90 L78 130 L42 130 Z" fill="#4A6CF7"/>
-      <!-- Arm pointing -->
-      <path d="M78 95 L100 80" stroke="#FFD6B0" stroke-width="6" stroke-linecap="round"/>
-      <!-- Laptop -->
-      <rect x="26" y="118" width="50" height="30" rx="4" fill="#6366F1" opacity="0.8"/>
-      <rect x="30" y="122" width="42" height="20" rx="2" fill="#E8EEFF"/>
-      <rect x="18" y="148" width="66" height="4" rx="2" fill="#6366F1" opacity="0.6"/>
-      <!-- Person Right - teacher -->
-      <circle cx="262" cy="60" r="16" fill="#FFD6B0"/>
-      <!-- Hair -->
-      <path d="M246 54 Q246 40 262 38 Q278 40 278 54" fill="#6366F1"/>
-      <!-- Glasses -->
-      <circle cx="256" cy="58" r="5" stroke="#1A1A2E" stroke-width="1.2" fill="none"/>
-      <circle cx="268" cy="58" r="5" stroke="#1A1A2E" stroke-width="1.2" fill="none"/>
-      <line x1="261" y1="58" x2="263" y2="58" stroke="#1A1A2E" stroke-width="1"/>
-      <!-- Smile -->
-      <path d="M256 64 Q262 69 268 64" stroke="#1A1A2E" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-      <!-- Body -->
-      <path d="M244 82 Q244 76 262 74 Q280 76 280 82 L280 140 L244 140 Z" fill="#6366F1"/>
-      <!-- Arm with pointer -->
-      <path d="M244 92 L220 78" stroke="#FFD6B0" stroke-width="6" stroke-linecap="round"/>
-      <!-- Book stack -->
-      <rect x="252" y="126" width="36" height="8" rx="2" fill="#4A6CF7" opacity="0.6"/>
-      <rect x="256" y="118" width="32" height="8" rx="2" fill="#6366F1" opacity="0.5"/>
-      <rect x="254" y="134" width="34" height="8" rx="2" fill="#4A6CF7" opacity="0.4"/>
-      <!-- Floating elements -->
-      <circle cx="36" cy="32" r="6" fill="#4A6CF7" opacity="0.15"/>
-      <circle cx="290" cy="28" r="8" fill="#6366F1" opacity="0.12"/>
-      <!-- Graduation cap -->
-      <polygon points="140,6 160,0 180,6 160,12" fill="#4A6CF7" opacity="0.6"/>
-      <line x1="160" y1="6" x2="160" y2="16" stroke="#4A6CF7" opacity="0.6" stroke-width="1.5"/>
-      <!-- Sparkles -->
-      <path d="M28 56 L30 52 L32 56 L28 56" fill="#6366F1" opacity="0.4"/>
-      <path d="M286 54 L288 50 L290 54 L286 54" fill="#4A6CF7" opacity="0.4"/>
-      <circle cx="100" cy="10" r="3" fill="#6366F1" opacity="0.2"/>
-      <circle cx="224" cy="16" r="4" fill="#4A6CF7" opacity="0.15"/>
-      <!-- Magnifier -->
-      <circle cx="90" cy="40" r="10" stroke="#4A6CF7" stroke-width="2" fill="none" opacity="0.4"/>
-      <line x1="97" y1="47" x2="104" y2="54" stroke="#4A6CF7" stroke-width="2" opacity="0.4" stroke-linecap="round"/>
-    </svg>
-  </div>
-
-  <!-- Hint -->
-  <div class="hint-row" onclick="showHint()">
-    <div class="hint-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#4A6CF7" stroke-width="2.5" stroke-linecap="round">
-        <circle cx="12" cy="12" r="10"/>
-        <line x1="12" y1="16" x2="12" y2="12"/>
-        <line x1="12" y1="8" x2="12" y2="8"/>
-      </svg>
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-num">15+</div>
+      <div class="stat-label">Лет в бизнесе</div>
     </div>
-    <span class="hint-text">Как выбрать курс?</span>
+    <div class="stat-card">
+      <div class="stat-num">5</div>
+      <div class="stat-label">Направлений</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">Практики</div>
+    </div>
   </div>
 
-  <!-- Categories -->
-  <div class="category-list">
-    <button class="category-btn" onclick="openCategory('sales')">Продажи и переговоры</button>
-    <button class="category-btn" onclick="openCategory('business')">Онлайн-бизнес</button>
-    <button class="category-btn" onclick="openCategory('ai')">ИИ и автоматизация</button>
-    <button class="category-btn" onclick="openCategory('marketing')">Маркетинг и SMM</button>
-    <button class="category-btn" onclick="openCategory('brand')">Личный бренд</button>
-    <button class="admin-btn" id="adminBtn" onclick="addCategory()">+</button>
+  <div class="section-header">
+    <div class="section-title">Направления</div>
+    <div class="section-count">5 курсов</div>
   </div>
 
+  <div class="categories">
+    <div class="cat-card" onclick="openCategory('sales')">
+      <div class="cat-icon sales">💰</div>
+      <div class="cat-info">
+        <div class="cat-name">Продажи и переговоры</div>
+        <div class="cat-desc">Как продавать в офлайне и онлайне без скриптов</div>
+      </div>
+      <div class="cat-arrow">›</div>
+    </div>
+
+    <div class="cat-card" onclick="openCategory('business')">
+      <div class="cat-icon business">🚀</div>
+      <div class="cat-info">
+        <div class="cat-name">Из офлайна в онлайн</div>
+        <div class="cat-desc">Масштабирование бизнеса через интернет</div>
+      </div>
+      <div class="cat-arrow">›</div>
+    </div>
+
+    <div class="cat-card" onclick="openCategory('ai')">
+      <div class="cat-icon ai">🤖</div>
+      <div class="cat-info">
+        <div class="cat-name">ИИ для предпринимателей</div>
+        <div class="cat-desc">Автоматизация и AI-инструменты для роста</div>
+      </div>
+      <div class="cat-arrow">›</div>
+    </div>
+
+    <div class="cat-card" onclick="openCategory('marketing')">
+      <div class="cat-icon marketing">📱</div>
+      <div class="cat-info">
+        <div class="cat-name">Контент и SMM</div>
+        <div class="cat-desc">Reels, Telegram, YouTube — система контента</div>
+      </div>
+      <div class="cat-arrow">›</div>
+    </div>
+
+    <div class="cat-card" onclick="openCategory('brand')">
+      <div class="cat-icon brand">⭐</div>
+      <div class="cat-info">
+        <div class="cat-name">Личный бренд из регионов</div>
+        <div class="cat-desc">Как стать экспертом не из Москвы и Дубая</div>
+      </div>
+      <div class="cat-arrow">›</div>
+    </div>
+  </div>
 </div>
 
-<!-- ===== PAGE 2: ABOUT ===== -->
+<!-- PAGE: ABOUT -->
 <div id="page-about" class="page">
-
-  <!-- Illustration -->
-  <div class="about-illustration">
-    <svg viewBox="0 0 280 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- Desk -->
-      <rect x="60" y="120" width="160" height="6" rx="3" fill="#CBD5E1"/>
-      <rect x="80" y="126" width="6" height="28" rx="2" fill="#CBD5E1"/>
-      <rect x="194" y="126" width="6" height="28" rx="2" fill="#CBD5E1"/>
-      <!-- Monitor -->
-      <rect x="90" y="56" width="100" height="68" rx="8" fill="#1A1A2E"/>
-      <rect x="96" y="62" width="88" height="50" rx="4" fill="#E8EEFF"/>
-      <!-- Chart on screen -->
-      <polyline points="106,96 120,88 134,92 148,78 162,72 176,80" stroke="#4A6CF7" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-      <circle cx="176" cy="80" r="3" fill="#4A6CF7"/>
-      <!-- Arrow up -->
-      <path d="M170 72 L176 64 L182 72" stroke="#6366F1" stroke-width="2" fill="none" stroke-linecap="round"/>
-      <!-- Stand -->
-      <rect x="132" y="112" width="16" height="8" rx="2" fill="#94A3B8"/>
-      <!-- Person -->
-      <circle cx="46" cy="56" r="18" fill="#FFD6B0"/>
-      <path d="M28 50 Q28 34 46 32 Q64 34 64 50" fill="#1A1A2E"/>
-      <circle cx="40" cy="54" r="2" fill="#1A1A2E"/>
-      <circle cx="52" cy="54" r="2" fill="#1A1A2E"/>
-      <path d="M40 60 Q46 66 52 60" stroke="#1A1A2E" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-      <!-- Body -->
-      <path d="M28 80 Q28 72 46 70 Q64 72 64 80 L64 132 L28 132 Z" fill="#4A6CF7"/>
-      <!-- Arm gesture -->
-      <path d="M64 88 L84 78" stroke="#FFD6B0" stroke-width="6" stroke-linecap="round"/>
-      <!-- Coffee -->
-      <rect x="216" y="104" width="20" height="18" rx="4" fill="#6366F1" opacity="0.6"/>
-      <path d="M236 108 Q244 108 244 116 Q244 122 236 122" stroke="#6366F1" opacity="0.4" stroke-width="2" fill="none"/>
-      <!-- Steam -->
-      <path d="M222 100 Q224 94 226 98" stroke="#94A3B8" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-      <path d="M228 98 Q230 92 232 96" stroke="#94A3B8" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-      <!-- Floating elements -->
-      <circle cx="240" cy="42" r="12" fill="#4A6CF7" opacity="0.1"/>
-      <text x="234" y="47" font-size="14" fill="#4A6CF7" opacity="0.6">💡</text>
-      <!-- Stars -->
-      <path d="M20 24 L22 18 L24 24 L18 21 L26 21 Z" fill="#6366F1" opacity="0.3"/>
-      <path d="M260 30 L262 24 L264 30 L258 27 L266 27 Z" fill="#4A6CF7" opacity="0.3"/>
-      <!-- Rocket -->
-      <g transform="translate(250, 60) rotate(30)">
-        <ellipse cx="0" cy="0" rx="6" ry="14" fill="#6366F1" opacity="0.5"/>
-        <circle cx="0" cy="-4" r="3" fill="#E8EEFF"/>
-        <path d="M-4 10 L0 18 L4 10" fill="#F59E0B" opacity="0.6"/>
-      </g>
-    </svg>
-  </div>
-
-  <!-- Description block -->
-  <div class="about-quote">
-    <p><strong>«Онлайн-академия Вардгеса Арутюняна»</strong> — практические курсы от предпринимателя с 15+ лет опыта в реальном бизнесе. Вы получаете проверенные стратегии, рабочие инструменты и поддержку сообщества единомышленников.</p>
-  </div>
-
-  <!-- Advantages -->
-  <h2 class="section-title">Преимущества</h2>
-
-  <div class="advantage-card">
-    <div class="advantage-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 20V10"/>
-        <path d="M18 20V4"/>
-        <path d="M6 20v-4"/>
-      </svg>
+  <div class="about-section">
+    <div class="about-quote">
+      <p>Я не расскажу как стать миллионером за неделю. Но расскажу как строить бизнес, который кормит тебя 15 лет — и как перенести этот опыт в онлайн.</p>
+      <div class="author">— Вардгес Арутюнян</div>
     </div>
-    <div class="advantage-content">
-      <div class="advantage-title">Практика, не теория</div>
-      <div class="advantage-desc">Реальные кейсы из офлайн-бизнеса — вы получаете инструменты, которые можно применить сразу</div>
+
+    <div class="about-block">
+      <h3>👤 Кто я</h3>
+      <p>Предприниматель из Курска. 15+ лет в реальном бизнесе — туризм, отели, продажи. Не инфоцыган. Не теоретик. Практик, который прошёл кризисы, масштабировал бизнес и сейчас помогает другим сделать то же самое.</p>
+    </div>
+
+    <div class="about-block">
+      <h3>🎯 Для кого академия</h3>
+      <ul>
+        <li>Предприниматели с офлайн-бизнесом, которые хотят в онлайн</li>
+        <li>Эксперты, которые знают своё дело, но не умеют упаковывать</li>
+        <li>Те, кому надоели "гуру" без реального опыта</li>
+      </ul>
+    </div>
+
+    <div class="about-block">
+      <h3>💡 Чему учу</h3>
+      <ul>
+        <li>Продажи — как в жизни, а не по учебнику</li>
+        <li>Упаковка экспертности — от нуля до первого клиента</li>
+        <li>ИИ-инструменты — не модно, а полезно</li>
+        <li>Контент — система, а не вдохновение</li>
+        <li>Личный бренд — честно, из регионов</li>
+      </ul>
+    </div>
+
+    <div class="about-block">
+      <h3>🏆 Принципы</h3>
+      <ul>
+        <li>Реальный опыт > красивые слайды</li>
+        <li>Результат > процесс</li>
+        <li>Здравый смысл > хайп</li>
+        <li>Практика с первого дня</li>
+      </ul>
     </div>
   </div>
-
-  <div class="advantage-card">
-    <div class="advantage-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93"/>
-        <path d="M8.56 9.8A4 4 0 1 1 15.44 9.8"/>
-        <path d="M12 18v4"/>
-        <path d="M8 22h8"/>
-        <circle cx="12" cy="14" r="1"/>
-      </svg>
-    </div>
-    <div class="advantage-content">
-      <div class="advantage-title">ИИ-инструменты</div>
-      <div class="advantage-desc">Современные технологии для роста бизнеса — ChatGPT, автоматизация, нейросети</div>
-    </div>
-  </div>
-
-  <div class="advantage-card">
-    <div class="advantage-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-      </svg>
-    </div>
-    <div class="advantage-content">
-      <div class="advantage-title">Поддержка 24/7</div>
-      <div class="advantage-desc">Чат с наставником и сообщество — вы никогда не останетесь с вопросами один на один</div>
-    </div>
-  </div>
-
 </div>
 
-<!-- ===== PAGE 3: PURCHASE ===== -->
+<!-- PAGE: PURCHASE -->
 <div id="page-purchase" class="page">
+  <div class="purchase-section">
+    <div class="section-header" style="padding: 0 0 16px;">
+      <div class="section-title">Выберите тариф</div>
+    </div>
 
-  <!-- Diamond icon -->
-  <div class="purchase-icon">
-    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="diamondGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color:#4A6CF7"/>
-          <stop offset="50%" style="stop-color:#6366F1"/>
-          <stop offset="100%" style="stop-color:#818CF8"/>
-        </linearGradient>
-        <linearGradient id="diamondShine" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" style="stop-color:#fff;stop-opacity:0.4"/>
-          <stop offset="50%" style="stop-color:#fff;stop-opacity:0"/>
-          <stop offset="100%" style="stop-color:#fff;stop-opacity:0.2"/>
-        </linearGradient>
-      </defs>
-      <!-- Diamond body -->
-      <polygon points="50,10 85,38 50,90 15,38" fill="url(#diamondGrad)"/>
-      <!-- Top facets -->
-      <polygon points="50,10 85,38 50,38" fill="#6366F1" opacity="0.8"/>
-      <polygon points="50,10 15,38 50,38" fill="#4A6CF7" opacity="0.9"/>
-      <!-- Lower facets -->
-      <polygon points="50,38 85,38 50,90" fill="#4A6CF7" opacity="0.7"/>
-      <polygon points="50,38 15,38 50,90" fill="#6366F1" opacity="0.6"/>
-      <!-- Shine -->
-      <polygon points="50,10 65,38 50,38 35,38" fill="url(#diamondShine)"/>
-      <!-- Sparkle lines -->
-      <line x1="24" y1="16" x2="28" y2="22" stroke="#4A6CF7" stroke-width="2" opacity="0.5" stroke-linecap="round"/>
-      <line x1="22" y1="20" x2="30" y2="18" stroke="#4A6CF7" stroke-width="2" opacity="0.5" stroke-linecap="round"/>
-      <line x1="76" y1="14" x2="72" y2="20" stroke="#6366F1" stroke-width="2" opacity="0.5" stroke-linecap="round"/>
-      <line x1="78" y1="18" x2="70" y2="16" stroke="#6366F1" stroke-width="2" opacity="0.5" stroke-linecap="round"/>
-      <circle cx="90" cy="32" r="3" fill="#6366F1" opacity="0.3"/>
-      <circle cx="10" cy="30" r="2" fill="#4A6CF7" opacity="0.3"/>
-    </svg>
+    <div class="plan-card recommended selected" onclick="selectPlan(this, 1)">
+      <div class="plan-name">Полный доступ</div>
+      <div class="plan-price">4 990 ₽ <span>/ 3 месяца</span></div>
+      <div class="plan-desc">Все курсы + личные консультации + чат с Вардгесом</div>
+      <ul class="plan-features">
+        <li>Доступ ко всем 5 направлениям</li>
+        <li>Еженедельные Q&A сессии</li>
+        <li>Закрытый Telegram-чат</li>
+        <li>Личная обратная связь</li>
+      </ul>
+    </div>
+
+    <div class="plan-card" onclick="selectPlan(this, 2)">
+      <div class="plan-name">Базовый</div>
+      <div class="plan-price">2 490 ₽ <span>/ месяц</span></div>
+      <div class="plan-desc">Доступ к курсам + материалы</div>
+      <ul class="plan-features">
+        <li>Доступ ко всем направлениям</li>
+        <li>Записи Q&A сессий</li>
+        <li>Общий Telegram-чат</li>
+      </ul>
+    </div>
+
+    <div class="terms-row" onclick="toggleTerms()">
+      <div class="checkbox" id="termsCheckbox"></div>
+      <div class="terms-text">Я принимаю условия оферты и политику конфиденциальности</div>
+    </div>
+
+    <button class="pay-btn" id="payBtn" disabled onclick="handlePayment()">
+      Оплатить
+    </button>
   </div>
-
-  <h1 class="purchase-title">Premium доступ</h1>
-
-  <!-- Plan 1: 3 months -->
-  <div class="plan-card selected" onclick="selectPlan(this, 1)">
-    <div class="plan-card-top">
-      <div class="plan-name-row">
-        <div class="plan-radio"><div class="plan-radio-inner"></div></div>
-        <span class="plan-name">На 3 месяца</span>
-        <span class="plan-badge">-20%</span>
-      </div>
-      <span class="plan-price">4 990 ₽</span>
-    </div>
-    <div class="plan-details">
-      <span class="plan-old-price">6 237 ₽</span>
-      <span class="plan-sub">за 3 месяца</span>
-    </div>
-  </div>
-
-  <!-- Plan 2: Monthly -->
-  <div class="plan-card" onclick="selectPlan(this, 2)">
-    <div class="plan-card-top">
-      <div class="plan-name-row">
-        <div class="plan-radio"><div class="plan-radio-inner"></div></div>
-        <span class="plan-name">Ежемесячно</span>
-      </div>
-      <span class="plan-price">2 490 ₽/мес</span>
-    </div>
-    <div class="plan-details">
-      <span class="plan-sub">30 дней доступа к курсам</span>
-    </div>
-  </div>
-
-  <!-- Terms checkbox -->
-  <div class="terms-row">
-    <div class="terms-checkbox" id="termsCheckbox" onclick="toggleTerms()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20 6 9 17 4 12"/>
-      </svg>
-    </div>
-    <span class="terms-text">Я согласен(-а) с условиями <a href="#" onclick="event.stopPropagation()">Пользовательского соглашения</a> и <a href="#" onclick="event.stopPropagation()">Публичной офертой</a></span>
-  </div>
-
-  <!-- Pay button -->
-  <button class="pay-btn" id="payBtn" disabled onclick="handlePayment()">Оплатить</button>
-
 </div>
 
-<!-- ===== BOTTOM NAVBAR ===== -->
+<!-- BOTTOM NAV -->
 <div class="bottom-nav">
-  <!-- Catalog (home) -->
   <button class="nav-item active" onclick="switchTab('catalog')" data-tab="catalog">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-      <polyline points="9 22 9 12 15 12 15 22"/>
+      <rect x="3" y="3" width="7" height="7" rx="1"/>
+      <rect x="14" y="3" width="7" height="7" rx="1"/>
+      <rect x="3" y="14" width="7" height="7" rx="1"/>
+      <rect x="14" y="14" width="7" height="7" rx="1"/>
     </svg>
     <span>Каталог</span>
   </button>
 
-  <!-- My courses (book) -->
   <button class="nav-item" onclick="switchTab('my-courses')" data-tab="my-courses">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
@@ -912,7 +688,6 @@
     <span>Мои курсы</span>
   </button>
 
-  <!-- Profile (user) -->
   <button class="nav-item" onclick="switchTab('profile')" data-tab="profile">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
@@ -923,103 +698,68 @@
 </div>
 
 <script>
-  // ===== TELEGRAM WEBAPP INIT =====
   const tg = window.Telegram?.WebApp;
   if (tg) {
     tg.ready();
     tg.expand();
-    document.body.style.setProperty('--tg-theme-bg-color', tg.themeParams?.bg_color || '#F0F4FF');
+    // Set header color to match dark theme
+    tg.setHeaderColor('#1B2838');
   }
 
-  // ===== TAB SWITCHING =====
   let currentTab = 'catalog';
   const topTabs = document.querySelectorAll('.top-tab');
   const navItems = document.querySelectorAll('.nav-item');
 
   function switchTab(tabName) {
-    // Map nav tabs to pages
-    const pageMap = {
-      'catalog': 'page-catalog',
-      'about': 'page-about',
-      'purchase': 'page-purchase',
-      'my-courses': null,
-      'profile': null
-    };
-
-    // Handle tabs without pages
     if (tabName === 'my-courses' || tabName === 'profile') {
       if (tg) {
-        tg.showAlert(tabName === 'my-courses' ? 'Раздел «Мои курсы» скоро появится!' : 'Раздел «Профиль» скоро появится!');
+        tg.showAlert(tabName === 'my-courses' ? 'Раздел «Мои курсы» скоро появится! 🚀' : 'Раздел «Профиль» скоро появится! 🚀');
       }
       return;
     }
 
     currentTab = tabName;
+    const pageMap = { 'catalog': 'page-catalog', 'about': 'page-about', 'purchase': 'page-purchase' };
 
-    // Update top tabs
-    topTabs.forEach(tab => {
-      const tabTarget = tab.textContent.trim() === 'Каталог' ? 'catalog' :
-                        tab.textContent.trim() === 'О проекте' ? 'about' : 'purchase';
-      tab.classList.toggle('active', tabTarget === tabName);
+    topTabs.forEach((tab, i) => {
+      const names = ['catalog', 'about', 'purchase'];
+      tab.classList.toggle('active', names[i] === tabName);
     });
 
-    // Update pages
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    const targetPage = document.getElementById(pageMap[tabName]);
-    if (targetPage) targetPage.classList.add('active');
+    const target = document.getElementById(pageMap[tabName]);
+    if (target) target.classList.add('active');
 
-    // Update bottom nav
     navItems.forEach(item => {
-      item.classList.toggle('active', item.dataset.tab === tabName);
+      item.classList.toggle('active', item.dataset.tab === 'catalog');
     });
 
-    // If switching to catalog, ensure catalog nav is active
-    if (tabName === 'catalog' || tabName === 'about' || tabName === 'purchase') {
-      navItems.forEach(item => {
-        item.classList.toggle('active', item.dataset.tab === 'catalog');
-      });
-    }
-  }
-
-  // ===== CATALOG FUNCTIONS =====
-  function showHint() {
+    // Show back button on non-catalog pages
     if (tg) {
-      tg.showAlert('Выберите категорию, которая вам интересна. Внутри вы найдёте список курсов с описанием, программой и ценой. Не знаете с чего начать? Попробуйте «Продажи и переговоры» — наш хит!');
-    } else {
-      alert('Выберите категорию, которая вам интересна. Внутри вы найдёте список курсов с описанием, программой и ценой.');
+      if (tabName !== 'catalog') {
+        tg.BackButton.show();
+      } else {
+        tg.BackButton.hide();
+      }
     }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function openCategory(category) {
     const names = {
       'sales': 'Продажи и переговоры',
-      'business': 'Онлайн-бизнес',
-      'ai': 'ИИ и автоматизация',
-      'marketing': 'Маркетинг и SMM',
-      'brand': 'Личный бренд'
+      'business': 'Из офлайна в онлайн',
+      'ai': 'ИИ для предпринимателей',
+      'marketing': 'Контент и SMM',
+      'brand': 'Личный бренд из регионов'
     };
-    // Send data to bot
     if (tg) {
-      tg.sendData(JSON.stringify({ action: 'open_category', category: category }));
+      tg.sendData(JSON.stringify({ action: 'open_category', category, name: names[category] }));
     }
   }
 
-  function addCategory() {
-    if (tg) {
-      tg.sendData(JSON.stringify({ action: 'admin_add_category' }));
-    }
-  }
-
-  // Show admin button if user is admin (check via initData)
-  function checkAdmin() {
-    // Admin IDs can be passed via bot or checked client-side
-    const btn = document.getElementById('adminBtn');
-    // For now hidden; bot can send a message to show it
-    // btn.style.display = 'block';
-  }
-  checkAdmin();
-
-  // ===== PURCHASE FUNCTIONS =====
+  // Purchase logic
   let selectedPlan = 1;
   let termsAccepted = false;
 
@@ -1031,30 +771,24 @@
 
   function toggleTerms() {
     termsAccepted = !termsAccepted;
-    const cb = document.getElementById('termsCheckbox');
-    cb.classList.toggle('checked', termsAccepted);
+    document.getElementById('termsCheckbox').classList.toggle('checked', termsAccepted);
     document.getElementById('payBtn').disabled = !termsAccepted;
   }
 
   function handlePayment() {
     if (!termsAccepted) return;
-
     const planData = selectedPlan === 1
-      ? { plan: '3months', price: 4990, label: 'На 3 месяца' }
-      : { plan: 'monthly', price: 2490, label: 'Ежемесячно' };
-
+      ? { plan: '3months', price: 4990, label: 'Полный доступ — 3 мес' }
+      : { plan: 'monthly', price: 2490, label: 'Базовый — 1 мес' };
     if (tg) {
       tg.sendData(JSON.stringify({ action: 'purchase', ...planData }));
     }
   }
 
-  // ===== INIT =====
-  // Handle back button
+  // Back button handler
   if (tg) {
     tg.BackButton.onClick(() => {
-      if (currentTab !== 'catalog') {
-        switchTab('catalog');
-      }
+      if (currentTab !== 'catalog') switchTab('catalog');
     });
   }
 </script>
