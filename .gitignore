@@ -1,0 +1,5 @@
+webapp/ref_*.jpg
+data/
+venv/
+__pycache__/
+.env
