@@ -1,15 +1,23 @@
 """Инлайн-клавиатуры бота."""
 
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from bot.models import Course
+
+WEBAPP_URL = "https://vardges13.github.io/course-bot/"
 
 
 # ─── Главное меню ─────────────────────────────────────────────
 
 def main_menu_kb() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
+    builder.row(
+        InlineKeyboardButton(
+            text="🎓 ОТКРЫТЬ АКАДЕМИЮ",
+            web_app=WebAppInfo(url=WEBAPP_URL),
+        ),
+    )
     builder.row(
         InlineKeyboardButton(text="📋 Меню курсов", callback_data="catalog"),
     )
