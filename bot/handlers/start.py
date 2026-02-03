@@ -1,36 +1,111 @@
 """Обработчики /start, главное меню, каталог, «Мои курсы»."""
 
+import os
+from pathlib import Path
+
 from aiogram import Router, F
 from aiogram.filters import CommandStart
-from aiogram.types import Message, CallbackQuery
+from aiogram.types import Message, CallbackQuery, FSInputFile
 
 from bot.services import db
 from bot.keyboards import main_menu_kb, catalog_kb, course_detail_kb
 
 router = Router()
 
+WELCOME_PHOTO = Path(__file__).parent.parent.parent / "webapp" / "vardges.jpg"
+
+WELCOME_TEXT = (
+    "🎓 <b>VARDGES ACADEMY</b>\n"
+    "━━━━━━━━━━━━━━━━━━━━\n\n"
+    "Привет, <b>{name}</b>! 👋\n\n"
+    "Я — <b>Вардгес Арутюнян</b>, предприниматель с 15-летним опытом в реальном бизнесе.\n\n"
+    "Здесь ты найдёшь:\n"
+    "💰 Продажи и переговоры\n"
+    "🚀 Из офлайна в онлайн\n"
+    "🤖 ИИ для предпринимателей\n"
+    "📱 Контент и SMM\n"
+    "⭐ Личный бренд из регионов\n\n"
+    "<i>«Реальный бизнес × ИИ × Здравый смысл»</i>\n\n"
+    "👇 <b>Нажми «Меню» чтобы начать:</b>"
+)
+
 
 @router.message(CommandStart())
 async def cmd_start(message: Message) -> None:
-    """Приветствие + главное меню."""
+    """Приветствие + фото + главное меню."""
     user = await db.get_or_create_user(
         telegram_id=message.from_user.id,
         full_name=message.from_user.full_name,
         username=message.from_user.username,
     )
-    await message.answer(
-        f"Привет, {user.full_name}! 👋\n\n"
-        "Я бот с онлайн-курсами. Выбери, что тебе интересно:",
-        reply_markup=main_menu_kb(),
-    )
+
+    text = WELCOME_TEXT.format(name=user.full_name)
+
+    if WELCOME_PHOTO.exists():
+        photo = FSInputFile(WELCOME_PHOTO)
+        await message.answer_photo(
+            photo=photo,
+            caption=text,
+            parse_mode="HTML",
+            reply_markup=main_menu_kb(),
+        )
+    else:
+        await message.answer(
+            text,
+            parse_mode="HTML",
+            reply_markup=main_menu_kb(),
+        )
 
 
 @router.callback_query(F.data == "main_menu")
 async def show_main_menu(callback: CallbackQuery) -> None:
-    await callback.message.edit_text(
-        "Главное меню — выбери действие:",
-        reply_markup=main_menu_kb(),
+    try:
+        await callback.message.edit_caption(
+            caption="🎓 <b>VARDGES ACADEMY</b>\n\n👇 <b>Выбери действие:</b>",
+            reply_markup=main_menu_kb(),
+            parse_mode="HTML",
+        )
+    except Exception:
+        await callback.message.edit_text(
+            "🎓 <b>VARDGES ACADEMY</b>\n\n👇 <b>Выбери действие:</b>",
+            reply_markup=main_menu_kb(),
+            parse_mode="HTML",
+        )
+    await callback.answer()
+
+
+@router.callback_query(F.data == "about")
+async def show_about(callback: CallbackQuery) -> None:
+    text = (
+        "🎓 <b>О VARDGES ACADEMY</b>\n"
+        "━━━━━━━━━━━━━━━━━━━━\n\n"
+        "👤 <b>Вардгес Арутюнян</b>\n"
+        "Предприниматель из Курска\n"
+        "15+ лет в реальном бизнесе\n\n"
+        "🏢 Туризм, отели, продажи — всё прошёл сам.\n"
+        "Не инфоцыган. Не теоретик. Практик.\n\n"
+        "📌 <b>Принципы:</b>\n"
+        "→ Реальный опыт > красивые слайды\n"
+        "→ Результат > процесс\n"
+        "→ Здравый смысл > хайп\n"
+        "→ Практика с первого дня\n\n"
+        "📱 Instagram: @vardges13\n"
+        "✈️ Telegram: @vardges13"
     )
+    from bot.keyboards import about_back_kb
+    try:
+        await callback.message.edit_caption(
+            caption=text,
+            reply_markup=about_back_kb(),
+            parse_mode="HTML",
+        )
+    except Exception:
+        await callback.message.edit_text(
+            text,
+            reply_markup=about_back_kb(),
+            parse_mode="HTML",
+            disable_web_page_preview=True,
+        )
     await callback.answer()
 
 

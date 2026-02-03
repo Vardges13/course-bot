@@ -11,13 +11,14 @@ from bot.models import Course
 def main_menu_kb() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     builder.row(
-        InlineKeyboardButton(text="📚 Каталог курсов", callback_data="catalog"),
+        InlineKeyboardButton(text="📋 Меню курсов", callback_data="catalog"),
     )
     builder.row(
         InlineKeyboardButton(text="🛒 Корзина", callback_data="cart"),
+        InlineKeyboardButton(text="📦 Мои курсы", callback_data="my_courses"),
     )
     builder.row(
-        InlineKeyboardButton(text="📦 Мои курсы", callback_data="my_courses"),
+        InlineKeyboardButton(text="ℹ️ Об академии", callback_data="about"),
     )
     return builder.as_markup()
 
@@ -100,6 +101,12 @@ def admin_courses_delete_kb(courses: list[Course]) -> InlineKeyboardMarkup:
             )
         )
     builder.row(InlineKeyboardButton(text="« Админ-панель", callback_data="admin:menu"))
+    return builder.as_markup()
+
+
+def about_back_kb() -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    builder.row(InlineKeyboardButton(text="« Главное меню", callback_data="main_menu"))
     return builder.as_markup()
 
 

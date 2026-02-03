@@ -8,6 +8,7 @@ from bot.keyboards.inline import (
     admin_menu_kb,
     admin_courses_delete_kb,
     back_to_admin_kb,
+    about_back_kb,
 )
 
 __all__ = [
@@ -18,4 +19,5 @@ __all__ = [
     "admin_menu_kb",
     "admin_courses_delete_kb",
     "back_to_admin_kb",
+    "about_back_kb",
 ]
