@@ -1,6 +1,5 @@
 """Обработчики /start, главное меню, каталог, «Мои курсы»."""
 
-import os
 from pathlib import Path
 
 from aiogram import Router, F

@@ -12,4 +12,7 @@ COPY . .
 # Директория для БД
 RUN mkdir -p /app/data
 
+# Порт для webhook ЮKassa
+EXPOSE 8080
+
 CMD ["python", "-m", "bot"]
